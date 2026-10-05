@@ -1,20 +1,54 @@
-# Makefile - Micro-Proyecto 2
 CXX = g++
+
 CXXFLAGS = -std=c++11 -O2 -Wall
 
-COMUNES = Image.o ImageIO.o
+TARGET = filterer
 
-all: processor
+OBJS = processor.o \
+       Image.o \
+       ImageIO.o \
+       BlurFilter.o \
+       LaplaceFilter.o \
+       SharpenFilter.o
 
-processor: processor.o $(COMUNES)
-	$(CXX) $(CXXFLAGS) -o $@ $^
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $<
+all: $(TARGET)
 
-processor.o: processor.cpp Image.h ImageIO.h Filter.h Timer.h
+
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+
+
+processor.o: processor.cpp \
+             Image.h \
+             ImageIO.h \
+             Filter.h \
+             BlurFilter.h \
+             LaplaceFilter.h \
+             SharpenFilter.h \
+             Timer.h
+	$(CXX) $(CXXFLAGS) -c processor.cpp
+
+
 Image.o: Image.cpp Image.h
+	$(CXX) $(CXXFLAGS) -c Image.cpp
+
+
 ImageIO.o: ImageIO.cpp ImageIO.h Image.h
+	$(CXX) $(CXXFLAGS) -c ImageIO.cpp
+
+
+BlurFilter.o: BlurFilter.cpp BlurFilter.h Filter.h Image.h
+	$(CXX) $(CXXFLAGS) -c BlurFilter.cpp
+
+
+LaplaceFilter.o: LaplaceFilter.cpp LaplaceFilter.h Filter.h Image.h
+	$(CXX) $(CXXFLAGS) -c LaplaceFilter.cpp
+
+
+SharpenFilter.o: SharpenFilter.cpp SharpenFilter.h Filter.h Image.h
+	$(CXX) $(CXXFLAGS) -c SharpenFilter.cpp
+
 
 clean:
-	rm -f *.o processor
+	rm -f *.o filterer processor
