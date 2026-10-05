@@ -1,0 +1,10 @@
+*.o
+*.exe
+filterer
+th_filterer
+omp_filterer
+mpi_filterer
+processor
+.DS_Store
+output/*
+!output/.gitkeep
