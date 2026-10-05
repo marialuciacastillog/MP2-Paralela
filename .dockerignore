@@ -1,0 +1,9 @@
+*.o
+filterer
+mpi_filterer
+processor
+processor.exe
+images
+output
+.DS_Store
+*.zip

@@ -1,0 +1,32 @@
+# docker-compose.yml - Levanta 3 contenedores (nodos) en la misma red
+#
+#   docker compose up -d --build     enciende los nodos
+#   docker compose down              los apaga
+#
+# Solo nodo1 (el coordinador, rank 0) tiene acceso a las carpetas images y
+# output, porque es el unico que lee y escribe archivos. Los demas nodos
+# reciben los datos por mensajes MPI.
+
+x-nodo: &nodo
+  build: .
+  image: mp2-mpi
+  cpus: 1.0          # cada nodo usa como maximo 1 nucleo, como una maquina pequenia
+
+services:
+  nodo1:
+    <<: *nodo
+    container_name: nodo1
+    hostname: nodo1
+    volumes:
+      - ./images:/home/mpiuser/app/images:ro
+      - ./output:/home/mpiuser/app/output
+
+  nodo2:
+    <<: *nodo
+    container_name: nodo2
+    hostname: nodo2
+
+  nodo3:
+    <<: *nodo
+    container_name: nodo3
+    hostname: nodo3
